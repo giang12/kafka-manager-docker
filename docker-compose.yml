@@ -1,6 +1,7 @@
 # Docker compose to have Zookeeper, Kafka, and Kafka Manager running for development.
 # Provided by @chris-zen
 
+
 zookeeper:
   image: confluent/zookeeper
   ports:
@@ -25,7 +26,7 @@ kafka:
 
 
 kafka-manager:
-  image: sheepkiller/kafka-manager:latest
+  build: .
   ports:
     - "9000:9000"
   links:

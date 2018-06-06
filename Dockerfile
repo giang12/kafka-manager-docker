@@ -1,6 +1,6 @@
 FROM centos:7
 
-MAINTAINER Clement Laforet <sheepkiller@cultdeadsheep.org>
+MAINTAINER Z
 
 RUN yum update -y && \
     yum install -y java-1.8.0-openjdk-headless && \
@@ -8,9 +8,9 @@ RUN yum update -y && \
 
 ENV JAVA_HOME=/usr/java/default/ \
     ZK_HOSTS=localhost:2181 \
-    KM_VERSION=1.3.3.14 \
-    KM_REVISION=5de818f330365fc3cd835b8227875ad12f29ed15 \
-    KM_CONFIGFILE="conf/application.conf"
+    KM_VERSION=1.3.3.17 \
+    KM_REVISION=0356db5f2698c36ec676b947c786b8543086dd49 \
+    KM_CONFIGFILE="/kafka-manager/conf/application.conf"
 
 ADD start-kafka-manager.sh /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
 
@@ -28,7 +28,10 @@ RUN yum install -y java-1.8.0-openjdk-devel git wget unzip which && \
     yum autoremove -y java-1.8.0-openjdk-devel git wget unzip which && \
     yum clean all
 
-WORKDIR /kafka-manager-${KM_VERSION}
+Run cp -R /kafka-manager-${KM_VERSION} /kafka-manager && chmod -R 777 /kafka-manager
+
+WORKDIR /kafka-manager
 
 EXPOSE 9000
+
 ENTRYPOINT ["./start-kafka-manager.sh"]
