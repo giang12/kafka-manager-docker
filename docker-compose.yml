@@ -24,7 +24,6 @@ kafka:
     - KAFKA_NUM_PARTITIONS=2
     - KAFKA_DELETE_RETENTION_MS=1000
 
-
 kafka-manager:
   build: .
   ports:
@@ -35,4 +34,6 @@ kafka-manager:
   environment:
     ZK_HOSTS: zookeeper:2181
     APPLICATION_SECRET: letmein
+    KM_USERNAME: foo
+    KM_PASSWORD: bar
     KM_ARGS: -Djava.net.preferIPv4Stack=true

@@ -8,11 +8,11 @@ RUN yum update -y && \
 
 ENV JAVA_HOME=/usr/java/default/ \
     ZK_HOSTS=localhost:2181 \
-    KM_VERSION=1.3.3.17 \
-    KM_REVISION=0356db5f2698c36ec676b947c786b8543086dd49 \
+    KM_VERSION=1.3.3.14 \
+    KM_REVISION=5de818f330365fc3cd835b8227875ad12f29ed15 \
     KM_CONFIGFILE="/kafka-manager/conf/application.conf"
 
-ADD start-kafka-manager.sh /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
+ADD start-kafka-manager /kafka-manager-${KM_VERSION}/bin/start-kafka-manager
 
 RUN yum install -y java-1.8.0-openjdk-devel git wget unzip which && \
     mkdir -p /tmp && \
@@ -24,14 +24,18 @@ RUN yum install -y java-1.8.0-openjdk-devel git wget unzip which && \
     ./sbt clean dist && \
     unzip  -d / ./target/universal/kafka-manager-${KM_VERSION}.zip && \
     rm -fr /tmp/* /root/.sbt /root/.ivy2 && \
-    chmod +x /kafka-manager-${KM_VERSION}/start-kafka-manager.sh && \
     yum autoremove -y java-1.8.0-openjdk-devel git wget unzip which && \
     yum clean all
 
-Run cp -R /kafka-manager-${KM_VERSION} /kafka-manager && chmod -R 777 /kafka-manager
+Run cp -R /kafka-manager-${KM_VERSION} /kafka-manager && \
+    chmod -R 644 /kafka-manager && \
+    chmod +x /kafka-manager/bin/ && \
+    mv -R /kafka-manager/bin/ /usr/bin/ && \
+    env >> "env.lock" && \
+    rm -rf /kafka-manager-${KM_VERSION}
 
 WORKDIR /kafka-manager
 
 EXPOSE 9000
 
-ENTRYPOINT ["./start-kafka-manager.sh"]
+ENTRYPOINT ["start-kafka-manager"]
