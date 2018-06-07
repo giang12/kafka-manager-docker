@@ -9,6 +9,7 @@ RUN curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.
 
 ENV KM_VERSION=1.3.3.14 \
     KM_REVISION=5de818f330365fc3cd835b8227875ad12f29ed15
+    JAVA_HOME=/usr/java/default
 
 RUN mkdir -p /tmp /src && wget -nv https://github.com/yahoo/kafka-manager/archive/$KM_VERSION.tar.gz -O /tmp/kafka-manager.tar.gz\
   && tar -xf /tmp/kafka-manager.tar.gz -C /src && cd /src/kafka-manager-$KM_VERSION \
